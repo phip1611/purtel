@@ -5,11 +5,11 @@ The presentation was on Fri, 2020-12-04 @ 13:00.
 
 ## About
 
-Name: Philipp Schuster
-Supervisor: Hannes Weisbach
+Name: Philipp Schuster\
+Supervisor: Hannes Weisbach\
 Supervisor 2: Michael Roitzsch
 
-Topic: Task-parallel runtime systems & programming models
+### Topic: Task-parallel runtime systems & programming models
 
 This prototype is a simple demonstration to make "#pragma"-like code annotations in Rust code
 with the goal to generate code. The annotations are similar to OpenMP, but Purtel is different. 
@@ -26,7 +26,7 @@ This project only builds with the nightly channel of Rust (1.50.0-nightly works,
 - each task is a closure (lambda) in Rust without return type and without parameters
 - each task manages it's shared data by itself via `Arc<RwLock<T>>`
 - all shared state shall be accessed via `Arc<RwLock<T>>`
-    - `Arc`: atomic reference count
+    - `Arc`: atomic reference count inside each thread
     - `RwLock`: ReadWrite-Lock -> n readers or 1 writer
     - `T`: actual data
     - otherwise multiple threads would spawn but only run after each other 
@@ -41,17 +41,38 @@ This project only builds with the nightly channel of Rust (1.50.0-nightly works,
     - Read after Write
     - Write after Write
     - Write after Read
-- a dependency between tasks does not exist iff:
+- a dependency does not exist between tasks iff:
     - Read after Read
 - so far all dependencies of a previous task are also dependencies of a task
   (transitive inheritance)
 
 ## Guarantees
 - if all tasks follow my task model and can run in sequentially order and terminate,
-  then also the optimal, parallelized execution will terminate
+  then also the optimal, parallelized execution will terminate and be correct.
 
 ## Examples
-In `src/bin` there are two binaries. One binary contains all boilerplate code that is needed.
+In `src/bin` are two binaries. One binary contains all boilerplate code that is needed.
 The other one uses purtel code annotations to generate this boilerplate code.
 
+### Short code snippet
+```rust
+    ...
+    #[purtel_tasks] {
+        // consumes var "data1" read only
+        // we move the var into the closure
+        // (and later into a thread)
+        let data1_t = data1.clone();
+        #[purtel_task(read = "data1")] {}
+        let task1 = move || {
+            let _data1 = data1_t.try_read().unwrap();
+            println!("task 1 is running");
+            // we simulate an expensive task
+            sleep(Duration::from_secs(1));
+        };
+    ...
+     // Blocking
+    let mut executor = PurtelExecutor::new(closures, param_usages);
+    executor.calc_and_verify_exe_order();
+    executor.execute();
+```
 

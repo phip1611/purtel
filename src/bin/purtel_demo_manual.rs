@@ -12,10 +12,13 @@ fn main() {
     let data2 = Arc::new(RwLock::new(vec![42]));
 
     let data1_t = data1.clone();
-    // consumes data1 read only
+    // consumes var "data1" read only
+    // we move the var into the closure
+    // (and later into a thread)
     let task1 = move || {
         let _data1 = data1_t.try_read().unwrap();
         println!("task 1 is running");
+        // we simulate an expensive task
         sleep(Duration::from_secs(1));
     };
 

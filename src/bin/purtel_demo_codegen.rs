@@ -21,12 +21,15 @@ fn main() {
     // this will analyze all purtel task metadata,
     // UNWRAP(!) the inner block and finally execute everything
     #[purtel_tasks] {
-        // consumes data1 read only
+        // consumes var "data1" read only
+        // we move the var into the closure
+        // (and later into a thread)
         let data1_t = data1.clone();
         #[purtel_task(read = "data1")] {}
         let task1 = move || {
             let _data1 = data1_t.try_read().unwrap();
             println!("task 1 is running");
+            // we simulate an expensive task
             sleep(Duration::from_secs(1));
         };
 
