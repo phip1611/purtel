@@ -1,0 +1,20 @@
+[package]
+name = "purtel-codegen"
+version = "0.1.0"
+description = "purtel - codegen sub project"
+authors = ["Philipp Schuster <phip1611@gmail.com>"]
+edition = "2018"
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# necessary for proc macro to work
+proc-macro = true
+
+[dependencies]
+quote = "1.0.7" # macht die Entwicklung von prodeuralen Macros leichter
+syn = { version = "1.0.42", features = ["full"]} # macht die Entwicklung von prodeuralen Macros leichter
+proc-macro2 = "1.0.24"
+darling = "0.10.2" # Wrapper around syn that helps to parse attribute meta attributes into structs
+# purtel-core = { path = "../purtel-core" }

@@ -1,0 +1,19 @@
+[package]
+name = "purtel"
+version = "0.1.0"
+description = "Purtel - Phips userland runtime task execution library."
+authors = ["Philipp Schuster <phip1611@gmail.com>"]
+edition = "2018"
+publish = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[workspace]
+members = [
+  "purtel-codegen",
+  "purtel-core",
+]
+
+[dependencies]
+purtel-core = { path = "purtel-core" }
+purtel-codegen = { path = "purtel-codegen" }
