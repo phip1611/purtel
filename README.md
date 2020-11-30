@@ -1,5 +1,8 @@
 # Purtel - Phips userland runtime task execution library.
 
+Protype for a Task-parallel runtime systems in Rust. Focus is on code generation during compile time.
+
+
 This repository contains my Rust prototype for my INF-D-960 project at TU Dresden.
 The presentation was on Fri, 2020-12-04 @ 13:00.
 
