@@ -51,7 +51,7 @@ This project only builds with the nightly channel of Rust (1.50.0-nightly works,
 
 ## Guarantees
 - if all tasks follow my task model and can run in sequentially order and terminate,
-  then also the optimal, parallelized execution will terminate and be correct.
+  then also the parallelized execution will terminate and be correct.
 
 ## Examples
 In `src/bin` are two binaries. One binary contains all boilerplate code that is needed.
